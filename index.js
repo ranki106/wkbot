@@ -62,6 +62,8 @@ client.once('clientReady', () => {
 client.on('interactionCreate', async interaction => {
     if(!interaction.isChatInputCommand()) return
 
+    await interaction.deferReply()
+
     const command = client.commands.get(interaction.commandName)
     if(!command) return
 
@@ -70,7 +72,7 @@ client.on('interactionCreate', async interaction => {
 
     } catch (err) {
         console.error(err)
-        await interaction.reply({
+        await interaction.editReply({
             content: 'There was an error while executing this command!',
             ephemeral: true
         })

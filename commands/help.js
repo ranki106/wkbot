@@ -31,7 +31,7 @@ module.exports = {
             })
 
 
-            return interaction.reply({
+            return interaction.editReply({
                     embeds: [embed]
             })
         }

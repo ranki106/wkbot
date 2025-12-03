@@ -22,7 +22,7 @@ module.exports = {
                 const isValid = await isApiKeyValid(apiKey)
                 console.log("TESTING", isValid)
                 if(!isValid) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: "The provided API key is invalid. Please check and try again.",
                         flags: 64
                     })
@@ -35,7 +35,7 @@ module.exports = {
                 (err, row) => {
                     if(err) {
                         console.error(err)
-                        return interaction.reply({
+                        return interaction.editReply({
                             content: 'There was an error while accessing your API key!',
                             ephemeral: true
                         })
@@ -43,7 +43,7 @@ module.exports = {
                     
                     if(!row) {
                         if(!apiKey) {
-                            return interaction.reply({
+                            return interaction.editReply({
                                 content: 'You must provide an API key to set it up for the first time!',
                                 ephemeral: true
                             })
@@ -55,7 +55,7 @@ module.exports = {
                             [userId, guildId, apiKey, ping_enabled],
                         )
 
-                        return interaction.reply({ content: `Your API key has been set. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
+                        return interaction.editReply({ content: `Your API key has been set. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
                     }
 
                     if (apiKey) {
@@ -63,14 +63,14 @@ module.exports = {
                             `UPDATE apikeys SET api_key = ?, ping_enabled = ? WHERE user_id = ? AND guild_id = ?`,
                             [apiKey, ping_enabled, userId, guildId],
                         )
-                        return interaction.reply({ content: `Your API key has been updated. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
+                        return interaction.editReply({ content: `Your API key has been updated. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
                     } else {
                         db.run(
                             `UPDATE apikeys SET ping_enabled = ? WHERE user_id = ? AND guild_id = ?`,
                             [ping_enabled, userId, guildId],
                         )
 
-                        return interaction.reply({ content: `Your ping preferences have been updated. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
+                        return interaction.editReply({ content: `Your ping preferences have been updated. \nPing notifications: **${ping_enabled ? 'Enabled' : 'Disabled'}**.`, ephemeral: true } );
                     }
                 }
             )
