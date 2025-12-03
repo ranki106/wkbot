@@ -1,17 +1,7 @@
 require('dotenv').config()
 const fs = require('fs')
-const express = require('express');
 const { scheduleDailyPing } = require('./scheduler');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
-
-const app = express();
-const PORT = process.env.PORT || 8080;
-app.get('/', (req, res) => {
-  res.send('WaniKani Discord Bot is running!');
-});
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-})
 
 // Database stuff
 const sqlite3 = require('sqlite3').verbose()
@@ -21,7 +11,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
-        ping_enabled INTEGER DEFAULT 1,
+        ping_enabled, INTEGER DEFAULT 1,
         points INTEGER DEFAULT 0
     )`)
 
@@ -62,8 +52,6 @@ client.once('clientReady', () => {
 client.on('interactionCreate', async interaction => {
     if(!interaction.isChatInputCommand()) return
 
-    await interaction.deferReply()
-
     const command = client.commands.get(interaction.commandName)
     if(!command) return
 
@@ -72,7 +60,7 @@ client.on('interactionCreate', async interaction => {
 
     } catch (err) {
         console.error(err)
-        await interaction.editReply({
+        await interaction.reply({
             content: 'There was an error while executing this command!',
             ephemeral: true
         })

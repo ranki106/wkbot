@@ -12,7 +12,7 @@ async function getWaniKaniData(apiKey) {
     if (!userRes.ok) {
         const text = await userRes.text();
         console.error('waniKani API error response:', userRes.status, text);
-        return interaction.editReply({ content: 'Failed to fetch data from WaniKani API. Please ensure your API key is valid.', ephemeral: true });
+        return interaction.reply({ content: 'Failed to fetch data from WaniKani API. Please ensure your API key is valid.', ephemeral: true });
     }
 
     const userData = await userRes.json();
@@ -23,7 +23,7 @@ async function getWaniKaniData(apiKey) {
     if (!assignmentsRes.ok) {
         const text = await assignmentsRes.text();
         console.error('waniKani API error response:', assignmentsRes.status, text);
-        return interaction.editReply({ content: 'Failed to fetch assignments from WaniKani API. Please ensure your API key is valid.', ephemeral: true });
+        return interaction.reply({ content: 'Failed to fetch assignments from WaniKani API. Please ensure your API key is valid.', ephemeral: true });
     }
 
     const assignmentsData = await assignmentsRes.json();
