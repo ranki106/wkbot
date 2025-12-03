@@ -1,7 +1,17 @@
 require('dotenv').config()
 const fs = require('fs')
+const express = require('express');
 const { scheduleDailyPing } = require('./scheduler');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+
+const app = express();
+const PORT = process.env.PORT || 8080;
+app.get('/', (req, res) => {
+  res.send('WaniKani Discord Bot is running!');
+});
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+})
 
 // Database stuff
 const sqlite3 = require('sqlite3').verbose()
@@ -11,7 +21,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
-        ping_enabled, INTEGER DEFAULT 1,
+        ping_enabled INTEGER DEFAULT 1,
         points INTEGER DEFAULT 0
     )`)
 
