@@ -15,7 +15,14 @@ app.listen(PORT, () => {
 
 // Database stuff
 const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('./database.sqlite')
+const db = new sqlite3.Database('./database.sqlite', (err) => {
+    if (err) {
+        console.error("Failed to open SQLite database:", err.message);
+    } else {
+        console.log("SQLite DB opened successfully");
+    }
+});
+
 
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
@@ -23,17 +30,21 @@ db.serialize(() => {
         name TEXT,
         ping_enabled INTEGER DEFAULT 1,
         points INTEGER DEFAULT 0
-    )`)
+    )`, (err) => {
+        if (err) console.error(" Error creating users table:", err.message);
+        else console.log("users table OK");
+    });
 
-    //db.run(`DROP TABLE IF EXISTS apikeys`)
-    
     db.run(`CREATE TABLE IF NOT EXISTS apikeys (
         user_id TEXT NOT NULL,
         guild_id TEXT NOT NULL,
         api_key TEXT,
         ping_enabled INTEGER DEFAULT 1,
         PRIMARY KEY (user_id, guild_id)
-    )`)
+    )`, (err) => {
+        if (err) console.error("Error creating apikeys table:", err.message);
+        else console.log("apikeys table OK");
+    });
 })
 
 
