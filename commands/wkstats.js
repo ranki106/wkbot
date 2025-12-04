@@ -13,17 +13,17 @@ module.exports = {
 
         db.get(`SELECT api_key FROM apikeys WHERE user_id = ? AND guild_id = ?`, [userId, guildId], async (err, row) => {
             if (err) {
-                return interaction.editReply({ content: 'There was an error while retrieving your API key!', ephemeral: true });
+                return interaction.reply({ content: 'There was an error while retrieving your API key!', ephemeral: true });
             }
             if (!row) {
-                return interaction.editReply({ content: 'You have not set your API key yet. Use /setkey to add your WaniKani API key.', ephemeral: true });
+                return interaction.reply({ content: 'You have not set your API key yet. Use /setkey to add your WaniKani API key.', ephemeral: true });
             }
 
             try {
                 const { userData, dueNext24Hours, dueRightNow, pendingLessons } = await getWaniKaniData(row.api_key);
                 // console.log("Fetched WaniKani Data: ", userData, dueNext24Hours, dueRightNow, pendingLessons)   
                 // console.log("Fetched WaniKani Data:", userData)
-                return interaction.editReply({
+                return interaction.reply({
                     content: `**WaniKani Statistics for ${userData.username}:**\n` +
                              `Level: ${userData.level}\n` +
                              `Pending Lessons: ${pendingLessons}\n` +
@@ -33,7 +33,7 @@ module.exports = {
                 });
             } catch (err) {
                 console.error(err)
-                interaction.editReply({ content: 'There was an error while fetching your WaniKani statistics. Please ensure your API key is valid.', ephemeral: true });
+                interaction.reply({ content: 'There was an error while fetching your WaniKani statistics. Please ensure your API key is valid.', ephemeral: true });
             }
         })
     }

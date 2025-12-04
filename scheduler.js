@@ -4,7 +4,7 @@ const { getWaniKaniData } = require('./helpers/wanikaniData');
 const { EmbedBuilder } = require('discord.js');
 
 function scheduleDailyPing(client, db) {
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("0 15 * * *", async () => {
         sendDailyWKUpdates(client, db)
     })
 }
