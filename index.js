@@ -65,7 +65,7 @@ for (const file of commandsFiles) {
     client.commands.set(cmd.data.name, cmd)
 }
 
-client.once('clientReady', () => {
+client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   scheduleDailyPing(client, db)
 });

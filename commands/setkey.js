@@ -19,8 +19,15 @@ module.exports = {
     async execute(interaction, db) {
         const apiKey = interaction.options.getString('apikey');
         const userId = interaction.user.id;
-        const guildId = interaction.guild.id;
+        const guildId = interaction.guild?.id;
         const ping_enabled = interaction.options.getBoolean('ping') ? 1 : 0;
+
+        if (!guildId) {
+            return interaction.reply({
+                content: 'Could not get server ID. Please try again later.',
+                ephemeral: true
+            });
+        }
 
         // Validate API key if provided
         if (apiKey) {
