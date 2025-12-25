@@ -1,15 +1,25 @@
 require('dotenv').config()
 const fs = require('fs')
+const path = require('path');
 const { scheduleDailyPing } = require('./scheduler');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 
 // Database stuff
+const dbPath = path.join(__dirname, 'database.sqlite');
 const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('./database.sqlite', (err) => {
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error("Failed to open SQLite database:", err.message);
     } else {
         console.log("SQLite DB opened successfully");
+
+        db.run("PRAGMA journal_mode = WAL;", (err) => {
+            if (err) {
+                console.error("Failed to set journal mode to WAL:", err.message);
+            } else {
+                console.log("Journal mode set to WAL");
+            }
+        });
     }
 });
 
