@@ -19,14 +19,20 @@ module.exports = {
     async execute(interaction, db) {
         const apiKey = interaction.options.getString('apikey');
         const userId = interaction.user.id;
-        const guildId = interaction.guild?.id;
+        let guildId = interaction.guild?.id;
         const ping_enabled = interaction.options.getBoolean('ping') ? 1 : 0;
 
         if (!guildId) {
-            return interaction.reply({
-                content: 'Could not get server ID. Please try again later.',
-                ephemeral: true
-            });
+            try{
+                guildId = await interaction.guild.fetch().then(guild => guild.id);
+           } catch(err){
+                console.error("Guild ID not found for interaction:", err);
+                return interaction.reply({
+                    content: 'Could not get server ID. Please try again later.',
+                    ephemeral: true
+                });
+           }
+            
         }
 
         // Validate API key if provided
