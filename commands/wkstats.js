@@ -10,8 +10,7 @@ module.exports = {
     async execute(interaction, db) {
         const userId = interaction.user.id
         const guildId = interaction.guild.id
-        const username = interaction.user.nickname ? interaction.user.nickname : interaction.user.username 
-        console.log(`Fetching WaniKani stats for user ${interaction.user.nickname} (${userId}) in guild ${guildId}`);
+        const username = interaction.member?.nickname ?? interaction.user.username
 
         db.get(`SELECT api_key FROM apikeys WHERE user_id = ? AND guild_id = ?`, [userId, guildId], async (err, row) => {
             if (err) {
