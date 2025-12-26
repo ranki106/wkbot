@@ -10,6 +10,7 @@ module.exports = {
     async execute(interaction, db) {
         const userId = interaction.user.id
         const guildId = interaction.guild.id
+        const username = interaction.user.nickname ? interaction.user.nickname : interaction.user.username 
 
         db.get(`SELECT api_key FROM apikeys WHERE user_id = ? AND guild_id = ?`, [userId, guildId], async (err, row) => {
             if (err) {
@@ -24,7 +25,7 @@ module.exports = {
                 // console.log("Fetched WaniKani Data: ", userData, dueNext24Hours, dueRightNow, pendingLessons)   
                 // console.log("Fetched WaniKani Data:", userData)
                 return interaction.reply({
-                    content: `**WaniKani Statistics for ${userData.username}:**\n` +
+                    content: `**WaniKani Statistics for ${username}:**\n` +
                              `Level: ${userData.level}\n` +
                              `Pending Lessons: ${pendingLessons}\n` +
                              `Current Due Reviews: ${dueRightNow}\n` +

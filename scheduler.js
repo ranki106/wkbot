@@ -32,7 +32,7 @@ async function sendDailyWKUpdates(client, db) {
             
             for (const row of rows) {
                 const member = await guild.members.fetch(row.user_id).catch(() => null);
-                const username = member ? member.user.username : "Unknown";
+                const username = member ? member.nickname ? member.nickname : member.user.username : "Unknown";
 
                 if (row.ping_enabled === 1) {
                     pingList.push(`<@${row.user_id}>`);
